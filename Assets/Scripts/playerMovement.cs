@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+// using UnityEngine.InputSystem;
+
  
 public class PlayerMovement : MonoBehaviour
 {
@@ -10,6 +12,11 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 forceToApply;
     public Vector2 PlayerInput;
     public float forceDamping;
+
+    // public void Start(){
+    //     rb = GetComponent<Rigidbody2D>();
+    //     animator = GetComponent<Animator>();
+    // }
     void Update()
     {
         PlayerInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
@@ -25,6 +32,17 @@ public class PlayerMovement : MonoBehaviour
         }
         rb.velocity = moveForce;
     }
+
+    //  public void OnMove(InputValue value)
+    // {
+    //     moveInput = value.Get<Vector2>();
+ 
+    //     // Only set the animation direction if the player is trying to move
+    //     if(moveInput != Vector2.zero) {
+    //         animator.SetFloat("XInput", moveInput.x);
+    //         animator.SetFloat("YInput", moveInput.y);
+    //     }
+    // }
  
     // private void OnCollisionEnter2D(Collision2D collision)
     // {
