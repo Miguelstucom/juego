@@ -5,35 +5,46 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
-
-    public int health;
+    public static int health = 1;
     public int numOfHearts;
 
     public Image[] hearts;
-    [SerializeField]public Sprite fullHeart;
-    [SerializeField]public Sprite emptyHeart;
-    // Start is called before the first frame update
-    void Start()
+    public Sprite fullHeart;
+    public Sprite emptyHeart;
+
+    public static void DecreaseHealth()
     {
-        
+        if (health > 0)
+            health--;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        for (int i = 0; i< hearts.Length; i++){
-
-            if (i< health){
+        if (health > numOfHearts)
+        {
+            health = numOfHearts;
+        }
+        
+        for (int i = 0; i < hearts.Length; i++)
+        {
+            if (i < health)
+            {
                 hearts[i].sprite = fullHeart;
-            } else{
+            }
+            else
+            {
                 hearts[i].sprite = emptyHeart;
             }
 
-            if(i < numOfHearts){
+            if (i < numOfHearts)
+            {
                 hearts[i].enabled = true;
-            } else {
+            }
+            else
+            {
                 hearts[i].enabled = false;
             }
         }
     }
 }
+

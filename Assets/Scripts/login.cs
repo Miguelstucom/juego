@@ -3,16 +3,16 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
-using UnityEngine.SceneManagement;  // Necesario para cambiar de escena
+using UnityEngine.SceneManagement;
 
 public class LoginManager : MonoBehaviour
 {
     [SerializeField]
-    public TMPro.TMP_InputField usernameInputField; // Referencia al campo de nombre de usuario
-    public TMPro.TMP_InputField passwordInputField; // Referencia al campo de contraseña
-    public Button loginButton; // Referencia al botón de login
+    public TMPro.TMP_InputField usernameInputField;
+    public TMPro.TMP_InputField passwordInputField;
+    public Button loginButton;
 
-    private string loginURL = "http://localhost:80/unitybackend/login.php"; // URL de tu script PHP
+    private string loginURL = "http://localhost:80/unitybackend/login.php";
 
     void Start()
     {

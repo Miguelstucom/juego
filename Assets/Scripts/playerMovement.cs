@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 // using UnityEngine.InputSystem;
 
- 
+
 public class PlayerMovement : MonoBehaviour
 {
     public Rigidbody2D rb;
@@ -18,12 +18,13 @@ public class PlayerMovement : MonoBehaviour
     public addScore scoreAdder;
 
 
-    public void Start(){
-         //rb = GetComponent<Rigidbody2D>();
-         //animator = GetComponent<Animator>();
+    public void Start()
+    {
+        //rb = GetComponent<Rigidbody2D>();
+        //animator = GetComponent<Animator>();
         originalScaleX = Mathf.Abs(transform.localScale.x);
         originalScaleY = transform.localScale.y;
-     }
+    }
     void Update()
     {
         PlayerInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
@@ -36,12 +37,14 @@ public class PlayerMovement : MonoBehaviour
             transform.localScale = new Vector3(-originalScaleX, originalScaleY, 1);
         }
 
-        if (Input.GetKeyDown(KeyCode.E)){
+        if (Input.GetKeyDown(KeyCode.E))
+        {
             ScoreScript.scoreValue += 10;
             SaveScore(ScoreScript.scoreValue);
         }
 
-        if (Input.GetKeyDown(KeyCode.R)){
+        if (Input.GetKeyDown(KeyCode.R))
+        {
             int scorevalue = PlayerPrefs.GetInt("PlayerScore");
             string username = PlayerPrefs.GetString("username", "defaultUsername");
             scoreAdder.Login(username, scorevalue);
@@ -59,23 +62,34 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = moveForce;
     }
 
-        public void SaveScore(int score)
+    public void SaveScore(int score)
     {
         PlayerPrefs.SetInt("PlayerScore", score);
         PlayerPrefs.Save();
     }
 
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("slime"))
+        {
+            Health.DecreaseHealth();
+            Debug.Log("Health after collision: " + Health.health);
+        }
+    }
+
+
     //  public void OnMove(InputValue value)
     // {
     //     moveInput = value.Get<Vector2>();
- 
+
     //     // Only set the animation direction if the player is trying to move
     //     if(moveInput != Vector2.zero) {
     //         animator.SetFloat("XInput", moveInput.x);
     //         animator.SetFloat("YInput", moveInput.y);
     //     }
     // }
- 
+
     // private void OnCollisionEnter2D(Collision2D collision)
     // {
     //     if (collision.collider.CompareTag("Bullet"))
