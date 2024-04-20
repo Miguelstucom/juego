@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 // using UnityEngine.InputSystem;
 
  
 public class PlayerMovement : MonoBehaviour
 {
-    //I recommend 7 for the move speed, and 1.2 for the force damping
     public Rigidbody2D rb;
     public float moveSpeed;
     public Vector2 forceToApply;
@@ -14,11 +15,13 @@ public class PlayerMovement : MonoBehaviour
     public float forceDamping;
     private float originalScaleX;
     private float originalScaleY;
+    public addScore scoreAdder;
+
 
     public void Start(){
          //rb = GetComponent<Rigidbody2D>();
          //animator = GetComponent<Animator>();
-                 originalScaleX = Mathf.Abs(transform.localScale.x); // Asegúrate de tomar el valor absoluto
+        originalScaleX = Mathf.Abs(transform.localScale.x);
         originalScaleY = transform.localScale.y;
      }
     void Update()
@@ -26,11 +29,22 @@ public class PlayerMovement : MonoBehaviour
         PlayerInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
         if (PlayerInput.x > 0)
         {
-            transform.localScale = new Vector3(originalScaleX, originalScaleY, 1); // Mira a la derecha
+            transform.localScale = new Vector3(originalScaleX, originalScaleY, 1);
         }
         else if (PlayerInput.x < 0)
         {
-            transform.localScale = new Vector3(-originalScaleX, originalScaleY, 1); // Mira a la izquierda
+            transform.localScale = new Vector3(-originalScaleX, originalScaleY, 1);
+        }
+
+        if (Input.GetKeyDown(KeyCode.E)){
+            ScoreScript.scoreValue += 10;
+            SaveScore(ScoreScript.scoreValue);
+        }
+
+        if (Input.GetKeyDown(KeyCode.R)){
+            int scorevalue = PlayerPrefs.GetInt("PlayerScore");
+            string username = PlayerPrefs.GetString("username", "defaultUsername");
+            scoreAdder.Login(username, scorevalue);
         }
     }
     void FixedUpdate()
@@ -43,6 +57,12 @@ public class PlayerMovement : MonoBehaviour
             forceToApply = Vector2.zero;
         }
         rb.velocity = moveForce;
+    }
+
+        public void SaveScore(int score)
+    {
+        PlayerPrefs.SetInt("PlayerScore", score);
+        PlayerPrefs.Save();
     }
 
     //  public void OnMove(InputValue value)
