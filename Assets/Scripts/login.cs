@@ -1,42 +1,68 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
+using TMPro;
+using System.Collections;
+using UnityEngine.SceneManagement;  // Necesario para cambiar de escena
 
-public class NewBehaviourScript : MonoBehaviour
+public class LoginManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField]
+    public TMPro.TMP_InputField usernameInputField; // Referencia al campo de nombre de usuario
+    public TMPro.TMP_InputField passwordInputField; // Referencia al campo de contraseña
+    public Button loginButton; // Referencia al botón de login
+
+    private string loginURL = "http://localhost:80/unitybackend/login.php"; // URL de tu script PHP
+
     void Start()
     {
-        
+        loginButton.onClick.AddListener(() => Login(usernameInputField.text, passwordInputField.text));
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Login(string username, string password)
     {
-
+        StartCoroutine(LoginCoroutine(username, password));
     }
 
-    public void clickEnviaPost()
+    IEnumerator LoginCoroutine(string username, string password)
     {
-        WWWForm informacio = new WWWForm(); //L’omplim amb els valors a enviar
-        informacio.AddField("username", "dawsed");
-        informacio.AddField("password", "1234");
-        StartCoroutine(enviaPost(informacio));
-    }
+        WWWForm form = new WWWForm();
+        form.AddField("username", username);
+        form.AddField("password", password);
 
-    IEnumerator enviaPost(WWWForm parametres)
-    {
-        UnityWebRequest www = UnityWebRequest.Post("http://10.118.2.255:80/login.php ", parametres);
-        yield return www.SendWebRequest();
-        if (www.result != UnityWebRequest.Result.Success)
+        using (UnityWebRequest www = UnityWebRequest.Post(loginURL, form))
         {
-            Debug.Log(www.error);
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Error en el login: " + www.error);
+            }
+            else
+            {
+                Debug.Log("Respuesta del servidor: " + www.downloadHandler.text);
+                HandleResponse(www.downloadHandler.text, username);
+            }
+        }
+    }
+
+    void HandleResponse(string response, string username)
+    {
+        if (response.Contains("Login exitoso"))
+        {
+            Debug.Log("¡Login exitoso!");
+            PlayerPrefs.SetString("username", username);
+            PlayerPrefs.Save();
+            SceneManager.LoadScene(1);
+        }
+        else if (response.Contains("Usuario no encontrado"))
+        {
+            Debug.LogError("Usuario no encontrado. Por favor verifica tus credenciales.");
         }
         else
         {
-            string txtResp = www.downloadHandler.text; //Obtenim la resposta com un text simp
-            Debug.Log("Response: " + txtResp);
+            Debug.LogError("Error en la respuesta del servidor: " + response);
         }
     }
 }
+

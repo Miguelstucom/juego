@@ -12,14 +12,26 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 forceToApply;
     public Vector2 PlayerInput;
     public float forceDamping;
+    private float originalScaleX;
+    private float originalScaleY;
 
-    // public void Start(){
-    //     rb = GetComponent<Rigidbody2D>();
-    //     animator = GetComponent<Animator>();
-    // }
+    public void Start(){
+         //rb = GetComponent<Rigidbody2D>();
+         //animator = GetComponent<Animator>();
+                 originalScaleX = Mathf.Abs(transform.localScale.x); // Asegúrate de tomar el valor absoluto
+        originalScaleY = transform.localScale.y;
+     }
     void Update()
     {
         PlayerInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+        if (PlayerInput.x > 0)
+        {
+            transform.localScale = new Vector3(originalScaleX, originalScaleY, 1); // Mira a la derecha
+        }
+        else if (PlayerInput.x < 0)
+        {
+            transform.localScale = new Vector3(-originalScaleX, originalScaleY, 1); // Mira a la izquierda
+        }
     }
     void FixedUpdate()
     {
