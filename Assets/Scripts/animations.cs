@@ -6,7 +6,7 @@ public class animations : MonoBehaviour
 {
 
     public float speed = 5.0f; // Velocidad de movimiento del jugador
-    private Animator animator; // Para controlar las animaciones
+      public static Animator animator; // Para controlar las animaciones
     private Vector2 movement; // Dirección del movimiento
 
     void Start()
@@ -32,4 +32,3 @@ public class animations : MonoBehaviour
 
     }
 }
-
