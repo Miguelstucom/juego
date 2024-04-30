@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 // using UnityEngine.InputSystem;
 
 
@@ -16,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
     private float originalScaleX;
     private float originalScaleY;
     public addScore scoreAdder;
+    public Health healthComponent; // Referencia al componente Health
+    private bool isAlive = true;
 
 
     public void Start()
@@ -49,9 +52,36 @@ public class PlayerMovement : MonoBehaviour
             string username = PlayerPrefs.GetString("username", "defaultUsername");
             scoreAdder.Login(username, scorevalue);
         }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            animations.animator.SetTrigger("attack");
+        }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            animations.animator.ResetTrigger("attack"); // Restablecer el trigger cuando se suelta la tecla
+        }
+        if (healthComponent.health <= 0 && isAlive)
+        {
+            isAlive = false;
+            animations.animator.SetBool("isDead", true); 
+            StartCoroutine(RestartSceneAfterDelay(3f)); // Restart scene after 3 seconds
+        }
+    }
+
+    private IEnumerator RestartSceneAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
     }
     void FixedUpdate()
     {
+        if (!isAlive)
+        {
+            rb.velocity = Vector2.zero; // Detiene el movimiento del jugador si está muerto
+            return;
+        }
+
         Vector2 moveForce = PlayerInput * moveSpeed;
         moveForce += forceToApply;
         forceToApply /= forceDamping;
@@ -73,8 +103,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("slime"))
         {
-            Health.DecreaseHealth();
-            Debug.Log("Health after collision: " + Health.health);
+            if (healthComponent != null)
+            {
+                healthComponent.DecreaseHealth();
+                Debug.Log("Health after collision: " + healthComponent.health);
+            }
         }
     }
 

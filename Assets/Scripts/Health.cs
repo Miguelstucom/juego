@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
-    public static int health = 1;
+    public  int health = 1;
     public int numOfHearts;
 
     public Image[] hearts;
     public Sprite fullHeart;
     public Sprite emptyHeart;
 
-    public static void DecreaseHealth()
+    public  void DecreaseHealth()
     {
         if (health > 0)
             health--;

@@ -19547,6 +19547,7 @@ MonoBehaviour:
   PlayerInput: {x: 0, y: 0}
   forceDamping: 1.2
   scoreAdder: {fileID: 1536081522}
+  healthComponent: {fileID: 1536081520}
 --- !u!95 &1536081519
 Animator:
   serializedVersion: 5
@@ -19580,6 +19581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c632a56ea9a5ce4ea7a30d6421be589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 1
   numOfHearts: 2
   hearts:
   - {fileID: 661738237}
