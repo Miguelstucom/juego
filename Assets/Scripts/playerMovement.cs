@@ -56,14 +56,11 @@ public class PlayerMovement : MonoBehaviour
         {
             animations.animator.SetTrigger("attack");
         }
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            animations.animator.ResetTrigger("attack"); // Restablecer el trigger cuando se suelta la tecla
-        }
+
         if (healthComponent.health <= 0 && isAlive)
         {
             isAlive = false;
-            animations.animator.SetBool("isDead", true); 
+            animations.animator.SetBool("isDead", true);
             StartCoroutine(RestartSceneAfterDelay(3f)); // Restart scene after 3 seconds
         }
     }

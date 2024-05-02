@@ -18057,7 +18057,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverManagerPrefab: {fileID: 1093995302798770669, guid: 362d284d0529fcd499b38a88356af8cb, type: 3}
-  clientManagerPrefab: {fileID: 0}
+  clientManagerPrefab: {fileID: 6265167142547165130, guid: bc927d7ec2865a847a6d44386cb1a4ff, type: 3}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -19137,13 +19137,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 209802692}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 209802697}
+        m_TargetAssemblyTypeName: CanvasmManager, Assembly-CSharp
+        m_MethodName: ClickStartClient
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
