@@ -44,6 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3543f8d21cbfe247b2601f9d65fdc52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ipAddress: 127.0.0.1
   port: 9000
-  serverManagerPrefab: {fileID: 1093995302798770669}
+  playerPrefab: {fileID: 7226127315525889092, guid: 3e2d0929291a05641892786e6f5e5409, type: 3}

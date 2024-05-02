@@ -46,3 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ipAddress: 127.0.0.1
   port: 9000
+  playerPrefab: {fileID: 7226127315525889092, guid: 3e2d0929291a05641892786e6f5e5409, type: 3}

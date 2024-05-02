@@ -4,71 +4,53 @@ using UnityEngine;
 using Unity.Networking.Transport;
 using Unity.Collections;
 
-public class Servidor : MonoBehaviour
+public class Server : MonoBehaviour
 {
-    public NetworkDriver net_driver;
-    private NativeList<NetworkConnection> connections;
-    public string ipAddress = "127.0.0.1";
     public ushort port = 9000;
+    public NetworkDriver net_driver;
+    private NetworkPipeline pipeline;
+    public GameObject playerPrefab;
+    private NetworkEndpoint serverEndpoint;
 
-    // Start is called before the first frame update
     void Start()
     {
         net_driver = NetworkDriver.Create();
-        var endpoint = NetworkEndpoint.Parse(ipAddress, port);
-        if (net_driver.Bind(endpoint) != 0)
+        serverEndpoint = NetworkEndpoint.AnyIpv4;
+        serverEndpoint.Port = port;
+
+        if (net_driver.Bind(serverEndpoint) != 0)
         {
-            Debug.Log("Error al iniciar el servidor en: " + ipAddress + ":" + port);
+            Debug.Log("Error al enlazar el servidor al puerto " + port);
         }
         else
         {
-            connections = new NativeList<NetworkConnection>(16, Allocator.Persistent);
             net_driver.Listen();
-            Debug.Log("Servidor escuchando en: " + ipAddress + ":" + port);
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (!net_driver.IsCreated) return;
-
-        net_driver.ScheduleUpdate().Complete();
-        CheckForNewConnections();
-        CheckForDisconnected();
-    }
-
-    void CheckForNewConnections()
-    {
-        NetworkConnection c;
-        while ((c = net_driver.Accept()) != default(NetworkConnection))
-        {
-            connections.Add(c);
-            Debug.Log("Nueva conexión aceptada");
-        }
-    }
-
-    void CheckForDisconnected()
-    {
-        for (int i = 0; i < connections.Length; i++)
-        {
-            if (!connections[i].IsCreated)
-            {
-                connections.RemoveAtSwapBack(i);
-                --i;
-            }
+            Debug.Log("Servidor escuchando en el puerto " + port);
         }
     }
 
     private void OnDestroy()
     {
-        if (connections.IsCreated)
-            connections.Dispose();
-
-        if (net_driver.IsCreated)
-            net_driver.Dispose();
+        net_driver.Dispose();
     }
 
+    void Update()
+    {
+        net_driver.ScheduleUpdate().Complete();
 
+        // Aceptar nuevas conexiones
+        NetworkConnection conexion;
+        while ((conexion = net_driver.Accept()) != default(NetworkConnection))
+        {
+            Debug.Log("Servidor: nuevo cliente conectado");
+
+            // Envía un mensaje de confirmación al cliente de que se ha conectado correctamente
+            // Esto puede ser necesario dependiendo de la lógica de tu juego
+            // Enviar mensaje de confirmación
+
+            // Instanciar el GameObject del jugador en el servidor
+            GameObject player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+        }
+    }
 }
 
