@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 2837952033806113463}
   - component: {fileID: -6494705335512089475}
   - component: {fileID: 1257754230437739048}
+  - component: {fileID: 9179051800810201927}
   m_Layer: 0
   m_Name: playerPrefab
   m_TagString: Untagged
@@ -256,7 +257,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7226127315525889092}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca4e0c3335fa2ff4f9e4dec33acd35cc, type: 3}
   m_Name: 
@@ -265,7 +266,7 @@ MonoBehaviour:
   port: 9000
   id_key: -1
   velocitat: 0.0001
-  playerPrefab: {fileID: 0}
+  playerPrefab: {fileID: 1257754230437739048}
 --- !u!114 &1257754230437739048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,4 +279,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eba75363700856d48ae94a010863755d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  is_main_player: 0
+  is_main_player: 1
+--- !u!114 &9179051800810201927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7226127315525889092}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3543f8d21cbfe247b2601f9d65fdc52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ipAddress: 127.0.0.1
+  port: 9000

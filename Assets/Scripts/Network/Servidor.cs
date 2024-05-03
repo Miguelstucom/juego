@@ -133,7 +133,7 @@ switch (mis.op)
                 BroadCastOthers(kvp.Key, kvp.Value, new Missatge(kvp.Key, "nou_oponent", "s'ha iniciat un nou oponent"));
         break;
     case "mou":
-        //Debug.Log("client es mou");
+        Debug.Log("client es mou");
         BroadCastOthers(kvp.Key, kvp.Value, mis);
         break;
     default:
