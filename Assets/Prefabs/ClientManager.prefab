@@ -47,5 +47,5 @@ MonoBehaviour:
   ipAddress: 127.0.0.1
   port: 9000
   id_key: -1
-  velocitat: 0.0001
+  velocitat: 0.1
   playerPrefab: {fileID: 1257754230437739048, guid: 3e2d0929291a05641892786e6f5e5409, type: 3}

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9073133556125551042}
   - component: {fileID: 8214754313854038350}
-  - component: {fileID: 8561820017141953200}
   - component: {fileID: 520442558351786199}
   - component: {fileID: 2569510356976606329}
   - component: {fileID: 784457075200557438}
@@ -94,33 +93,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &8561820017141953200
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7226127315525889092}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!61 &520442558351786199
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -128,7 +100,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7226127315525889092}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -173,12 +145,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7226127315525889092}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 55ccd0893323e1748aaf9657b1264da2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 8561820017141953200}
+  rb: {fileID: 0}
   moveSpeed: 1
   forceToApply: {x: 1, y: 1}
   PlayerInput: {x: 0, y: 0}
@@ -266,7 +238,7 @@ MonoBehaviour:
   port: 9000
   id_key: -1
   velocitat: 0.0001
-  playerPrefab: {fileID: 1257754230437739048}
+  playerPrefab: {fileID: 0}
 --- !u!114 &1257754230437739048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -279,7 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eba75363700856d48ae94a010863755d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  is_main_player: 1
+  is_main_player: 0
 --- !u!114 &9179051800810201927
 MonoBehaviour:
   m_ObjectHideFlags: 0

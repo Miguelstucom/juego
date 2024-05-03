@@ -53,29 +53,22 @@ public float velocitat = 0.0001f;
        
     }
     //d
-private void FixedUpdate()
-{
-    // Obtener la entrada del teclado para el movimiento
-    float mov_h = Input.GetAxis("Horizontal");
-    float mov_v = Input.GetAxis("Vertical");
-
-    // Calcular el vector de movimiento en el plano XY
-    Vector3 movimiento = new Vector3(mov_h, mov_v, 0) * velocitat;
-
-    // Verificar si hay un cambio de posición desde la última actualización
-    if (posicio_ultima != movimiento)
+    private void FixedUpdate()
     {
-        // Aplicar el movimiento al GameObject en el plano XY
-        player.transform.Translate(movimiento);
+        // Obtener la entrada del teclado para el movimiento
+        float mov_h = Input.GetAxis("Horizontal");
+        float mov_v = Input.GetAxis("Vertical");
 
-        // Guardar la última posición conocida
-        posicio_ultima = movimiento;
-
-        // Enviar información de movimiento al servidor
-        SendMsgServer(new Missatge(id_key, "mou", JsonUtility.ToJson(player.transform.position)));
+        // Calcular el vector de movimiento
+        Vector3 posicio = new Vector3(mov_h, mov_v, 0f) * velocitat ;
+        if (posicio_ultima != posicio)
+        {
+            // Aplicar el movimiento al GameObject
+            player.transform.Translate(posicio);
+            //avisa al servidor
+            SendMsgServer(new Missatge(id_key, "mou", JsonUtility.ToJson(player.transform.position)));
+        }
     }
-}
-
     private void CheckConnexio()
     {
         if (!connexio.IsCreated)
