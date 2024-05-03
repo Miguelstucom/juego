@@ -18057,7 +18057,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverManagerPrefab: {fileID: 1093995302798770669, guid: 362d284d0529fcd499b38a88356af8cb, type: 3}
-  clientManagerPrefab: {fileID: 7226127315525889092, guid: 3e2d0929291a05641892786e6f5e5409, type: 3}
+  clientManagerPrefab: {fileID: 6265167142547165130, guid: bc927d7ec2865a847a6d44386cb1a4ff, type: 3}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -18120,7 +18120,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 1.0630982
+  orthographic size: 2.953128
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

@@ -6,7 +6,7 @@ using Unity.Collections;
 
 public class Client : MonoBehaviour
 {
-    public string ipAddress = "127.0.0.1";
+    public string ipAddress = "10.118.2.255";
     public ushort port = 9000;
 public int id_key=-1; //identificador que donar� el servidor
 private Dictionary<int, Player> oponents = new Dictionary<int, Player>();
@@ -20,7 +20,7 @@ public float velocitat = 0.0001f;
     // Start is called before the first frame update
     void Start()
     {
-        string ipAddressCanvas = "127.0.0.1";
+        string ipAddressCanvas = "10.118.2.255";
         ushort.TryParse("9000", out var portCanvas);
         ipAddress = string.IsNullOrEmpty(ipAddressCanvas) ? ipAddress : ipAddressCanvas;
         port = portCanvas == 0 ? port : portCanvas;
@@ -53,22 +53,29 @@ public float velocitat = 0.0001f;
        
     }
     //d
-    private void FixedUpdate()
-    {
-        // Obtener la entrada del teclado para el movimiento
-        float mov_h = Input.GetAxis("Horizontal");
-        float mov_v = Input.GetAxis("Vertical");
+private void FixedUpdate()
+{
+    // Obtener la entrada del teclado para el movimiento
+    float mov_h = Input.GetAxis("Horizontal");
+    float mov_v = Input.GetAxis("Vertical");
 
-        // Calcular el vector de movimiento
-        Vector3 posicio = new Vector3(mov_h, mov_v, 0f) * velocitat ;
-        if (posicio_ultima != posicio)
-        {
-            // Aplicar el movimiento al GameObject
-            player.transform.Translate(posicio);
-            //avisa al servidor
-            SendMsgServer(new Missatge(id_key, "mou", JsonUtility.ToJson(player.transform.position)));
-        }
+    // Calcular el vector de movimiento en el plano XY
+    Vector3 movimiento = new Vector3(mov_h, mov_v, 0) * velocitat;
+
+    // Verificar si hay un cambio de posición desde la última actualización
+    if (posicio_ultima != movimiento)
+    {
+        // Aplicar el movimiento al GameObject en el plano XY
+        player.transform.Translate(movimiento);
+
+        // Guardar la última posición conocida
+        posicio_ultima = movimiento;
+
+        // Enviar información de movimiento al servidor
+        SendMsgServer(new Missatge(id_key, "mou", JsonUtility.ToJson(player.transform.position)));
     }
+}
+
     private void CheckConnexio()
     {
         if (!connexio.IsCreated)
