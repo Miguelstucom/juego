@@ -6,9 +6,9 @@ using Unity.Collections;
 
 public class Client : MonoBehaviour
 {
-    public string ipAddress = "10.118.2.255";
+    public string ipAddress = "127.0.0.1";
     public ushort port = 9000;
-public int id_key=-1; //identificador que donar� el servidor
+public int id_key=-1;
 private Dictionary<int, Player> oponents = new Dictionary<int, Player>();
 Player player;
 public float velocitat = 0.0001f;
@@ -17,15 +17,12 @@ public float velocitat = 0.0001f;
 
     public NetworkDriver network_driver;
     private NetworkConnection connexio;
-    // Start is called before the first frame update
     void Start()
     {
-        string ipAddressCanvas = "10.118.2.255";
+        string ipAddressCanvas = "127.0.0.1";
         ushort.TryParse("9000", out var portCanvas);
         ipAddress = string.IsNullOrEmpty(ipAddressCanvas) ? ipAddress : ipAddressCanvas;
         port = portCanvas == 0 ? port : portCanvas;
-
-        //creem el driver i l'intentem vincular a l'adre�a indicada
         network_driver = NetworkDriver.Create();
         connexio = default(NetworkConnection);
         var direccio_server= NetworkEndpoint.Parse(ipAddress, port);
@@ -36,8 +33,6 @@ public float velocitat = 0.0001f;
     public void OnDestroy()
     {
         connexio.Disconnect(network_driver);
-        //A good pattern is to always set your NetworkConnection to
-        //default(NetworkConnection) to avoid stale references.
         connexio = default(NetworkConnection); 
         network_driver.Dispose();
     }
@@ -55,15 +50,12 @@ public float velocitat = 0.0001f;
     //d
     private void FixedUpdate()
     {
-        // Obtener la entrada del teclado para el movimiento
         float mov_h = Input.GetAxis("Horizontal");
         float mov_v = Input.GetAxis("Vertical");
 
-        // Calcular el vector de movimiento
         Vector3 posicio = new Vector3(mov_h, mov_v, 0f) * velocitat ;
         if (posicio_ultima != posicio)
         {
-            // Aplicar el movimiento al GameObject
             player.transform.Translate(posicio);
             //avisa al servidor
             SendMsgServer(new Missatge(id_key, "mou", JsonUtility.ToJson(player.transform.position)));
@@ -96,10 +88,6 @@ public float velocitat = 0.0001f;
                 case NetworkEvent.Type.Data:
                     FixedString128Bytes text = stream_lectura.ReadFixedString128();
                     Debug.Log("CLIENT rep:" + text);
-                    //podem escriure una resposta
-                    // network_driver.BeginSend(NetworkPipeline.Null, connexio, out var stream_escritura);
-                    // stream_escritura.WriteFixedString128("OK");
-                    // network_driver.EndSend(stream_escritura);
                     Missatge mis = JsonUtility.FromJson<Missatge>(text.ToString());
                     switch (mis.op)
                     {
@@ -134,6 +122,14 @@ public float velocitat = 0.0001f;
                         case "mou":
                             oponents[mis.key].transform.position = ( JsonUtility.FromJson<Vector3>(mis.msg));
                             break;
+
+                        case "object_update":
+                            InteractionData data = JsonUtility.FromJson<InteractionData>(mis.msg);
+                            GameObject obj = FindObjectByID(data.objectID);
+                            if (obj != null) {
+                                obj.SetActive(false);
+                            }
+                            break;
                     }
 
                     break;
@@ -148,6 +144,41 @@ public float velocitat = 0.0001f;
             net_event_type = network_driver.PopEventForConnection(connexio, out stream_lectura);
         }
     }
+
+GameObject FindObjectByID(int id) {
+    // This method should locate an object by ID. Implement this based on your game's logic.
+    foreach (var obj in FindObjectsOfType<GameObject>()) {
+        if (obj.GetInstanceID() == id) {
+            return obj;
+        }
+    }
+    return null; // Return null if object not found
+}
+
+void OnTriggerEnter2D(Collider2D other) {
+    if (other.gameObject.CompareTag("slime")) {
+        Debug.Log("tocando slime");
+
+        // Obtiene el ID de instancia del objeto 'slime' para la identificación en el servidor
+        int objectID = other.gameObject.GetInstanceID();
+
+        // Desactiva el objeto 'slime' localmente inmediatamente
+        other.gameObject.SetActive(false);
+
+        // Envía un mensaje al servidor sobre esta interacción
+        SendMsgServer(new Missatge(id_key, "object_interacted", JsonUtility.ToJson(new InteractionData(objectID))));
+    }
+}
+
+
+[System.Serializable]
+public class InteractionData {
+    public int objectID;
+
+    public InteractionData(int objectID) {
+        this.objectID = objectID;
+    }
+}
 
     public void SendChatMessage(string text)
     {

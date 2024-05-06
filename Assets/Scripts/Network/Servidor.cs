@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class Servidor : MonoBehaviour
 {
-    public string ipAddress = "10.118.2.255";
+    public string ipAddress = "127.0.0.1";
     public ushort port = 9000;
 
 //d
@@ -19,7 +19,7 @@ private int total_connexions = 0;
 
     void Start()
 {
-    string ipAddressCanvas = "10.118.2.255";
+    string ipAddressCanvas = "127.0.0.1";
     ushort.TryParse( "9000",  out var portCanvas);
     ipAddress = string.IsNullOrEmpty(ipAddressCanvas)  ? ipAddress: ipAddressCanvas;
     port = portCanvas == 0 ? port : portCanvas;
@@ -52,6 +52,8 @@ private int total_connexions = 0;
         }
         Debug.Log("SERVIDOR:: stop");
     }
+
+    
 
 
     void Update()
@@ -136,6 +138,14 @@ switch (mis.op)
         Debug.Log("client es mou");
         BroadCastOthers(kvp.Key, kvp.Value, mis);
         break;
+
+        case "object_interacted":
+    InteractionData interaction = JsonUtility.FromJson<InteractionData>(mis.msg);
+    Debug.Log($"Object with ID {interaction.objectID} was interacted with by client {kvp.Key}");
+
+    // Broadcast to other clients that the object should be deactivated
+    BroadCastOthers(kvp.Key, kvp.Value, new Missatge(-1, "object_update", JsonUtility.ToJson(interaction)));
+    break;
     default:
         Debug.Log("accio del client no controlada en el servidor");
         break;
@@ -209,6 +219,15 @@ public class Missatge
         this.key = key;
         this.op = op;
         this.msg = msg;
+    }
+}
+
+[System.Serializable]
+public class InteractionData {
+    public int objectID;
+
+    public InteractionData(int objectID) {
+        this.objectID = objectID;
     }
 }
 
