@@ -6,7 +6,7 @@ using Unity.Collections;
 
 public class Client : MonoBehaviour
 {
-    public string ipAddress = "127.0.0.1";
+    public string ipAddress = "10.118.2.255";
     public ushort port = 9000;
 public int id_key=-1;
 private Dictionary<int, Player> oponents = new Dictionary<int, Player>();
@@ -19,7 +19,7 @@ public float velocitat = 0.0001f;
     private NetworkConnection connexio;
     void Start()
     {
-        string ipAddressCanvas = "127.0.0.1";
+        string ipAddressCanvas = "10.118.2.255";
         ushort.TryParse("9000", out var portCanvas);
         ipAddress = string.IsNullOrEmpty(ipAddressCanvas) ? ipAddress : ipAddressCanvas;
         port = portCanvas == 0 ? port : portCanvas;

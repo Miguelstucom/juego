@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class Servidor : MonoBehaviour
 {
-    public string ipAddress = "127.0.0.1";
+    public string ipAddress = "10.118.2.255";
     public ushort port = 9000;
 
 //d
@@ -19,7 +19,7 @@ private int total_connexions = 0;
 
     void Start()
 {
-    string ipAddressCanvas = "127.0.0.1";
+    string ipAddressCanvas = "10.118.2.255";
     ushort.TryParse( "9000",  out var portCanvas);
     ipAddress = string.IsNullOrEmpty(ipAddressCanvas)  ? ipAddress: ipAddressCanvas;
     port = portCanvas == 0 ? port : portCanvas;
