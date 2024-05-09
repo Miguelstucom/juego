@@ -146,6 +146,18 @@ switch (mis.op)
     // Broadcast to other clients that the object should be deactivated
     BroadCastOthers(kvp.Key, kvp.Value, new Missatge(-1, "object_update", JsonUtility.ToJson(interaction)));
     break;
+
+    case "palanca_activada":
+    Debug.Log($"Palanca activada por el cliente {kvp.Key}");
+
+    // Suponemos que este mensaje ya incluye la lógica necesaria para identificar qué trampas eliminar
+    // Broadcast this message to all other clients so they can update their game state
+    BroadCastOthers(kvp.Key, kvp.Value, new Missatge(-1, "palanca_activada", ""));
+
+    // Puedes elegir también enviar un mensaje de confirmación al cliente que activó la palanca, si es necesario
+    SendToOne(kvp.Value, new Missatge(kvp.Key, "confirmacion_palanca", "Palanca activada y trampas eliminadas."));
+    break;
+
     default:
         Debug.Log("accio del client no controlada en el servidor");
         break;
