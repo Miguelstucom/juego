@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     public addScore scoreAdder;
     public Health healthComponent; // Referencia al componente Health
     private bool isAlive = true;
+    private static bool hasBeenTriggered = false;
 
 
     public void Start()
@@ -109,8 +110,22 @@ public class PlayerMovement : MonoBehaviour
                 Debug.Log("Health after collision: " + healthComponent.health);
             }
         }
-    }
+        if (other.gameObject.CompareTag("end") && !hasBeenTriggered)
+        {
+            hasBeenTriggered = true; // Marcar como ya activado
 
+            Debug.Log("partida acabada");
+            int scorevalue = PlayerPrefs.GetInt("PlayerScore");
+            string username = PlayerPrefs.GetString("username", "defaultUsername");
+            scoreAdder.Login(username, scorevalue);
+            SceneManager.LoadScene(2);
+        }
+
+        if (other.gameObject.CompareTag("Palanca")) {
+                        ScoreScript.scoreValue += 72;
+            SaveScore(ScoreScript.scoreValue);
+    }
+    }
 
     //  public void OnMove(InputValue value)
     // {

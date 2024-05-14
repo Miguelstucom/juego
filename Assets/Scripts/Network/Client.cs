@@ -108,8 +108,13 @@ public float velocitat = 0.0001f;
                                
                             }
 
+                            if (id_key != 1){
+                                player = Instantiate(playerPrefab, new Vector3(-4, -1), Quaternion.identity);
+                                player.is_main_player = false;
+                            }else{
                                 player = Instantiate(playerPrefab, new Vector3(-4, 1), Quaternion.identity);
-                                player.is_main_player = true;
+                                player.is_main_player = true;}
+
                             break;
                         case "nou_oponent":
                             
