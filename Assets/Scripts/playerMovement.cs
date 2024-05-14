@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private float originalScaleX;
     private float originalScaleY;
     public addScore scoreAdder;
-    public Health healthComponent; // Referencia al componente Health
+    public Health healthComponent;
     private bool isAlive = true;
     private static bool hasBeenTriggered = false;
 
@@ -59,13 +59,13 @@ public class PlayerMovement : MonoBehaviour
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            animations.animator.ResetTrigger("attack"); // Restablecer el trigger cuando se suelta la tecla
+            animations.animator.ResetTrigger("attack");
         }
         if (healthComponent.health <= 0 && isAlive)
         {
             isAlive = false;
             animations.animator.SetBool("isDead", true); 
-            StartCoroutine(RestartSceneAfterDelay(3f)); // Restart scene after 3 seconds
+            StartCoroutine(RestartSceneAfterDelay(3f));
         }
     }
 
@@ -79,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isAlive)
         {
-            rb.velocity = Vector2.zero; // Detiene el movimiento del jugador si está muerto
+            rb.velocity = Vector2.zero;
             return;
         }
 
@@ -112,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (other.gameObject.CompareTag("end") && !hasBeenTriggered)
         {
-            hasBeenTriggered = true; // Marcar como ya activado
+            hasBeenTriggered = true;
 
             Debug.Log("partida acabada");
             int scorevalue = PlayerPrefs.GetInt("PlayerScore");

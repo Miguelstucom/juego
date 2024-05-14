@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class LeaderboardManager : MonoBehaviour
 {
-    public TextMeshProUGUI[] scoreTexts; // Array para los textos de los scores usando TextMeshPro
+    public TextMeshProUGUI[] scoreTexts;
 
     void Start()
     {
@@ -15,7 +15,7 @@ public class LeaderboardManager : MonoBehaviour
 
     IEnumerator GetScores()
     {
-        string url = "http://localhost/unitybackend/getscores.php";  // Asegúrate de que la URL sea correcta
+        string url = "http://localhost/unitybackend/getscores.php";
         UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();
 

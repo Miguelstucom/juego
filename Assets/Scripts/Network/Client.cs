@@ -40,10 +40,9 @@ public float velocitat = 0.0001f;
     void Update()
     {
 
-        //esperem a rebre tota la informaci� del driver
        network_driver.ScheduleUpdate().Complete();
-        CheckConnexio(); //comprovem si encara estem conectats amb el servidor
-        LlegirMissatgesRebuts(); //actualitzem els missatges rebuts del servidor
+        CheckConnexio();
+        LlegirMissatgesRebuts();
 
        
     }
@@ -70,10 +69,8 @@ public float velocitat = 0.0001f;
     }
     private void LlegirMissatgesRebuts()
     {
-        // mirem els events que s'hi han produ�t
          DataStreamReader stream_lectura;
         NetworkEvent.Type net_event_type = network_driver.PopEventForConnection(connexio, out stream_lectura);
-        //mentres no retorni un event Empty, llegim el event
         while (net_event_type != NetworkEvent.Type.Empty)
         {
             switch (net_event_type)
@@ -81,7 +78,6 @@ public float velocitat = 0.0001f;
                 case NetworkEvent.Type.Connect:
 
                     Debug.Log("CLIENT:: conectat amb el servidor");
-                    //dd streamEscritura.WriteFixedString128("Soc el client");
                     SendMsgServer(new Missatge(-1, "inicia", ""));
                     break;
 
@@ -154,23 +150,17 @@ public float velocitat = 0.0001f;
     }
 
 GameObject FindObjectByID(int id) {
-    // This method should locate an object by ID. Implement this based on your game's logic.
     foreach (var obj in FindObjectsOfType<GameObject>()) {
         if (obj.GetInstanceID() == id) {
             return obj;
         }
     }
-    return null; // Return null if object not found
+    return null;
 }
 
 void RemoveTrapFromTilemap() {
-    // Encuentra todos los objetos en la escena con el tag "Traps"
     GameObject[] traps = GameObject.FindGameObjectsWithTag("Traps");
     foreach (GameObject trap in traps) {
-        // Desactiva el objeto para dejar de mostrarlo y que deje de interactuar en el juego
-        // trap.SetActive(false);
-
-        // O, si prefieres eliminar completamente el objeto de la escena, puedes usar Destroy
         Destroy(trap);
     }
 
@@ -180,24 +170,14 @@ void RemoveTrapFromTilemap() {
 void OnTriggerEnter2D(Collider2D other) {
     if (other.gameObject.CompareTag("slime")) {
         Debug.Log("tocando slime");
-
-        // Obtiene el ID de instancia del objeto 'slime' para la identificación en el servidor
         int objectID = other.gameObject.GetInstanceID();
-
-        // Desactiva el objeto 'slime' localmente inmediatamente
         other.gameObject.SetActive(false);
-
-        // Envía un mensaje al servidor sobre esta interacción
         SendMsgServer(new Missatge(id_key, "object_interacted", JsonUtility.ToJson(new InteractionData(objectID))));
     }
 
         if (other.gameObject.CompareTag("Palanca")) {
         Debug.Log("Interacción con Palanca");
-
-        // Lógica para eliminar una trampa del tilemap
         RemoveTrapFromTilemap();
-
-        // Envía un mensaje al servidor sobre esta interacción
         SendMsgServer(new Missatge(id_key, "palanca_activada", ""));
     }
 }
